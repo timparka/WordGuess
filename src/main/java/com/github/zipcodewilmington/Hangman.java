@@ -4,10 +4,8 @@ package com.github.zipcodewilmington;
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
 
 /**
  * @author xt0fer
@@ -15,12 +13,12 @@ import java.util.Scanner;
  * @date 5/27/21 11:02 AM
  */
 public class Hangman {
+    String again = "";
     String userInput = "";
     String randomWord = null;
     Scanner sc = new Scanner(System.in);
     char[] secretWord;
     char[] guessedSoFar;
-    ArrayList <Character> alreadyUsed = new ArrayList<Character>();
 
     //  1. starts the game
 //  2. a random word is chosen from a list
@@ -41,7 +39,9 @@ public class Hangman {
     }
 
     public void run() {
+        while (playAgain(again)){
         int guesses = 8;
+        ArrayList <Character> alreadyUsed = new ArrayList<Character>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader("Words.txt"));
             String line = reader.readLine();
@@ -73,33 +73,36 @@ public class Hangman {
         if (checkGuess(letterGuessed) != true) {
             guesses--;
         }
-        while (guesses < 8 || guesses > 0) {
+        while (guesses != 0) {
             System.out.println();
             System.out.print(guessedSoFar);
             System.out.println("\nYou have " + guesses + " tries left.\n" +
                     "Enter a single character: ");
             letterGuessed = sc.nextLine().toLowerCase().charAt(0);
-            while (alreadyUsed.contains(letterGuessed)){
+            while (alreadyUsed.contains(letterGuessed)) {
                 System.out.println("You already guessed this letter, try a different one! ");
                 letterGuessed = sc.nextLine().toLowerCase().charAt(0);
-                if (!alreadyUsed.contains(letterGuessed)){
+                if (!alreadyUsed.contains(letterGuessed)) {
                     break;
                 }
             }
             alreadyUsed.add(letterGuessed);
             this.checkInput(letterGuessed);
             this.checkGuess(letterGuessed);
-            if (win(letterGuessed) == true) {
-                break;
-            }
             if (checkGuess(letterGuessed) != true) {
                 guesses--;
-            }
-            if (guesses == 0){
-                System.out.println("You lost! The word was " + randomWord);
+            } else if (win(secretWord, guessedSoFar)) {
                 break;
             }
+            if (guesses == 0) {
+                System.out.println("You lost! The word was " + randomWord);
+                System.out.println("Would you like to play again? (yes or no) ");
+                again = sc.nextLine();
+                playAgain(again);
+            }
         }
+
+    }
     }
 
     public char checkInput(char letterGuessed) { //just checks if user entered a char
@@ -118,18 +121,26 @@ public class Hangman {
             if (secretWord[i] == letterGuessed){
                 valid = true;
                 guessedSoFar[i] = letterGuessed;
-                if (guessedSoFar == secretWord) {
-                    System.out.println("You won!");
-                }
             }
         }
         return valid;
     }
-    public boolean win(char letterGuessed) {
+    public boolean playAgain(String again){
+        boolean restart = true;
+        if (again.equals("yes")){
+            restart = true;
+        } else if (again.equals("no")) {
+            restart = false;
+        }
+        return restart;
+    }
+    public boolean win(char [] secretWord, char [] guessedSoFar) {
         boolean win = false;
-        checkGuess(letterGuessed);
-        if (guessedSoFar == secretWord) {
-            System.out.println("Congrats you won!");
+        if (Arrays.equals(secretWord, guessedSoFar)) {
+            System.out.println("You won!");
+            System.out.println("Would you like to play again? (yes or no) ");
+            again = sc.nextLine();
+            playAgain(again);
             win = true;
         }
         return win;
