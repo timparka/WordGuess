@@ -58,10 +58,10 @@ public class Hangman {
         } catch (Exception e) {
             // Handle this
         }
-        secretWord = randomWord.toCharArray();
-        guessedSoFar = new char[secretWord.length];
+        secretWord = randomWord.toCharArray();//[a (0), p [1], p[2], l[3], e [4]]
+        guessedSoFar = new char[secretWord.length];//[void, void, void, void, void]
         System.out.println("Let's Play Wordguess version 1.0\n" + "Current Guesses:");
-        for (int i = 0; i <= secretWord.length - 1; i++) {
+        for (int i = 0; i <= guessedSoFar.length - 1; i++) {
             System.out.print(guessedSoFar[i] = '-');//prints out '-' as the length of secretWord
         }
         System.out.println("\nYou have " + guesses + " tries left.\n" +
@@ -86,8 +86,8 @@ public class Hangman {
                     break;
                 }
             }
-            alreadyUsed.add(letterGuessed);
-            this.checkInput(letterGuessed);
+            alreadyUsed.add(letterGuessed); //adds char to alreadyused array
+            this.checkInput(letterGuessed); //checks if user enters a char
             this.checkGuess(letterGuessed);
             if (checkGuess(letterGuessed) != true) {
                 guesses--;
@@ -115,7 +115,7 @@ public class Hangman {
         }
         return letterGuessed;
     }
-    public boolean checkGuess(char letterGuessed){ //checks if
+    public boolean checkGuess(char letterGuessed){ //checks if userInput is equal to any value in secretword array
         boolean valid = false;
         for (int i = 0; i < secretWord.length ; i++){
             if (secretWord[i] == letterGuessed){
@@ -125,7 +125,7 @@ public class Hangman {
         }
         return valid;
     }
-    public boolean playAgain(String again){
+    public boolean playAgain(String again){ //method just sets this value to true or false depending on string
         boolean restart = true;
         if (again.equals("yes")){
             restart = true;
