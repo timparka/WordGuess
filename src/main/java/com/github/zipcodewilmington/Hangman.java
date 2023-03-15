@@ -19,21 +19,6 @@ public class Hangman {
     Scanner sc = new Scanner(System.in);
     char[] secretWord;
     char[] guessedSoFar;
-
-    //  1. starts the game
-//  2. a random word is chosen from a list
-//  3. the number of tries allowed is set to the length of the word
-//  4. setup the two (the solution and the player's guesses) character arrays
-//  5. WHILE the numbers of tries is less than tries allowed AND
-//  6. the player has not guessed the word
-//  7. print the current state of the player's guesses
-//  8. ask the player for a letter (a character)
-//  9. if the letter is a minus "-", quit the game
-//  10. else process the letter
-//  11. if the letter makes the work complete,
-//  12. the player wins
-//  13. after the while loop
-//  14. if the word is not guessed, player loses
     public static void main(String[] args) {
         new Hangman().run();
     }
@@ -146,4 +131,3 @@ public class Hangman {
         return win;
     }
 }
-
